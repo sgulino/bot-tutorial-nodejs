@@ -24,7 +24,8 @@ function postMessage() {
   var pix = ["http://www.enchantedlearning.com/tgifs/Trexskelanim.gif","https://i.ytimg.com/vi/2AVqxPAs094/maxresdefault.jpg","http://vignette1.wikia.nocookie.net/walkingwithdinos/images/0/0f/Scary.png/revision/latest?cb=20140121044645","http://www.ydlywood.bham.sch.uk/uploads/9/3/5/7/9357125/1473767_orig.png","http://www.startwithabook.org/sites/default/files/themes_dinosaurs.jpg"];
   var rand = Math.floor(Math.random()*pix.length);
   
-  botResponse = pix[rand];
+  //botResponse = pix[rand];
+  botResponse = "DINOSAURS";
 
   options = {
     hostname: 'api.groupme.com',
