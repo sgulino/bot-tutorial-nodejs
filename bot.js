@@ -101,7 +101,7 @@ function postMessage() {
   botReq.end(JSON.stringify(body));
 }
 
-function postDino() {
+function postFuckPoland() {
   var botResponse, options, body, botReq;
   
   botResponse = "and also, fuck poland";
