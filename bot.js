@@ -10,6 +10,8 @@ function respond() {
   var botRegexFP = /[Ff][Uu][Cc][Kk][ ][Yy][Oo][Uu]/;
   var botRegexJF = /[Jj][Ee][Tt][ ][Ff][Uu][Ee][Ll][ ][Cc][Aa][Nn]['][Tt][ ][Mm][Ee][Ll][Tt][ ][Ss][Tt][Ee][Ee][Ll][ ][Bb][Ee][Aa][Mm][Ss]/;
   var botRegex911 = /9\/11 [Ww][Aa][Ss][ ][Aa][Nn][ ][Ii][Nn][Ss][Ii][Dd][Ee][ ][Jj][Oo][Bb]/;
+  var botRegexFS = /[Ff][Uu][Cc][Kk][ ][Ss][Ee][Aa][Nn]/;
+  var botRegexG = /[Gg][Ee][Oo][Rr][Gg][Ee][ ][Pp][.][ ][Ww][Aa][Nn][Gg]/;
 
   if(request.text && botRegex.test(request.text)) {
     this.res.writeHead(200);
@@ -31,7 +33,16 @@ function respond() {
     this.res.writeHead(200);
     post911();
     this.res.end();
-  } else {
+  } else if(request.text && botRegexFS.test(request.text)) {
+    this.res.writeHead(200);
+    postFS();
+    this.res.end();
+  } else if(request.text && botRegexG.test(request.text)) {
+    this.res.writeHead(200);
+    postG();
+    this.res.end();
+  }
+     else {
     console.log("don't care");
     this.res.writeHead(200);
     this.res.end();
@@ -180,6 +191,41 @@ function postJF() {
   });
   botReq.end(JSON.stringify(body));
 }
+function postFS() {
+  var botResponse, options, body, botReq;
+
+  botResponse = "http://viceland-assets-cdn.vice.com/wp/wp-content/uploads/2010/10/12-635x452.jpg";
+  
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+
 function post911() {
   var botResponse, options, body, botReq;
 
@@ -214,5 +260,42 @@ function post911() {
   });
   botReq.end(JSON.stringify(body));
 }
+
+function postG() {
+  var botResponse, options, body, botReq;
+
+  botResponse = "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRfgKS66R1eyhnHCLguZkPMKxLsj6uqX-EL6AAD6GVAyzKOJDEjVg";
+  
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+
+
 
 exports.respond = respond;
