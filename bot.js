@@ -8,6 +8,8 @@ function respond() {
   var botRegex = /[Dd][Ii][Nn][Oo][Ss][Aa][Uu][Rr][Ss]?/;
   var botRegexH = /[Ff][Aa][Gg][Gg][Oo][Tt]/;
   var botRegexFP = /[Ff][Uu][Cc][Kk][ ][Yy][Oo][Uu]/;
+  var botRegexJF = /[Jj][Ee][Tt][ ][Ff][Uu][Ee][Ll][ ][Cc][Aa][Nn]['][Tt][ ][Mm][Ee][Ll][Tt][ ][Ss][Tt][Ee][Ee][Ll][ ][Bb][Ee][Aa][Mm][Ss]/;
+  var botRegex911 = /9\/11 [Ww][Aa][Ss][ ][Aa][Nn][ ][Ii][Nn][Ss][Ii][Dd][Ee][ ][Jj][Oo][Bb]/;
 
   if(request.text && botRegex.test(request.text)) {
     this.res.writeHead(200);
@@ -20,6 +22,14 @@ function respond() {
   } else if(request.text && botRegexFP.test(request.text)) {
     this.res.writeHead(200);
     postFuckPoland();
+    this.res.end();
+  } else if(request.text && botRegexJF.test(request.text)) {
+    this.res.writeHead(200);
+    postJF();
+    this.res.end();
+  } else if(request.text && botRegex911.test(request.text)) {
+    this.res.writeHead(200);
+    post911();
     this.res.end();
   } else {
     console.log("don't care");
@@ -136,5 +146,73 @@ function postFuckPoland() {
   botReq.end(JSON.stringify(body));
 }
 
+function postJF() {
+  var botResponse, options, body, botReq;
+
+  botResponse = "Dank memes can't melt steel beams.";
+  
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+function post911() {
+  var botResponse, options, body, botReq;
+
+  botResponse = "INVESTIGATE 9/11. IT WAS A GOVERNMENT CONSPIRACY.";
+  
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
 
 exports.respond = respond;
