@@ -12,6 +12,7 @@ function respond() {
   var botRegex911 = /9\/11 [Ww][Aa][Ss][ ][Aa][Nn][ ][Ii][Nn][Ss][Ii][Dd][Ee][ ][Jj][Oo][Bb]/;
   var botRegexFS = /[Ff][Uu][Cc][Kk][ ][Ss][Ee][Aa][Nn]/;
   var botRegexG = /[Gg][Ee][Oo][Rr][Gg][Ee][ ][Pp][.][ ][Ww][Aa][Nn][Gg]/;
+  var botRegexJC = /[Jj][Oo][Hh][Nn][ ][Cc][Ee][Nn][Aa]/;
 
   if(request.text && botRegex.test(request.text)) {
     this.res.writeHead(200);
@@ -40,6 +41,10 @@ function respond() {
   } else if(request.text && botRegexG.test(request.text)) {
     this.res.writeHead(200);
     postG();
+    this.res.end();
+  } else if(request.text && botRegexJC.test(request.text)) {
+    this.res.writeHead(200);
+    postJC();
     this.res.end();
   }
      else {
@@ -230,6 +235,41 @@ function post911() {
   var botResponse, options, body, botReq;
 
   botResponse = "INVESTIGATE 9/11. IT WAS A GOVERNMENT CONSPIRACY.";
+  
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+
+function postJC() {
+  var botResponse, options, body, botReq;
+
+  botResponse = "http://www.newsmaritime.com/wp-content/uploads/2016/04/Shaquille-O%E2%80%99Neal-and-John-Cena-Surprised-Everyone-in-Wrestle-Mania-32.jpg";
   
   options = {
     hostname: 'api.groupme.com',
