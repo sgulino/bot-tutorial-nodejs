@@ -13,6 +13,7 @@ function respond() {
   var botRegexFS = /[Ff][Uu][Cc][Kk][ ][Ss][Ee][Aa][Nn]/;
   var botRegexG = /[Gg][Ee][Oo][Rr][Gg][Ee][ ][Pp][.][ ][Ww][Aa][Nn][Gg]/;
   var botRegexJC = /[Jj][Oo][Hh][Nn][ ][Cc][Ee][Nn][Aa]/;
+  var botRegexMF = /[Mm][Oo][Tt][Hh][Ee][Rr][Ff][Uu][Cc][Kk][Ee][Rr]/
 
   if(request.text && botRegex.test(request.text)) {
     this.res.writeHead(200);
@@ -45,6 +46,11 @@ function respond() {
   } else if(request.text && botRegexJC.test(request.text)) {
     this.res.writeHead(200);
     postJC();
+    this.res.end();
+  }
+   else if(request.text && botRegexMF.test(request.text)) {
+    this.res.writeHead(200);
+    postMF();
     this.res.end();
   }
      else {
@@ -131,6 +137,41 @@ function postFuckPoland() {
   var botResponse, options, body, botReq;
   
   botResponse = "And also, fuck Poland";
+  
+  options = {
+    hostname: 'api.groupme.com',
+    path: '/v3/bots/post',
+    method: 'POST'
+  };
+
+  body = {
+    "bot_id" : botID,
+    "text" : botResponse
+  };
+
+  console.log('sending ' + botResponse + ' to ' + botID);
+
+  botReq = HTTPS.request(options, function(res) {
+      if(res.statusCode == 202) {
+        //neat
+      } else {
+        console.log('rejecting bad status code ' + res.statusCode);
+      }
+  });
+
+  botReq.on('error', function(err) {
+    console.log('error posting message '  + JSON.stringify(err));
+  });
+  botReq.on('timeout', function(err) {
+    console.log('timeout posting message '  + JSON.stringify(err));
+  });
+  botReq.end(JSON.stringify(body));
+}
+
+function postMF() {
+  var botResponse, options, body, botReq;
+  
+  botResponse = "https://i.groupme.com/491x564.jpeg.8512f0ee144f4eb6aa0baf4521881bd4.large";
   
   options = {
     hostname: 'api.groupme.com',
